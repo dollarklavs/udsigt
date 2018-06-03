@@ -16,7 +16,7 @@ grassdb = '/tmp/grassdb_test'
 
 assigned_mem=4000
 distance = 2000
-observer_height = 5
+observer_height = 10
 point = (701495,6201503)
 
 with fiona.open(shp, "r") as shapefile, rasterio.open(vrt) as src_rst:
@@ -48,7 +48,7 @@ with fiona.open(shp, "r") as shapefile, rasterio.open(vrt) as src_rst:
             r_out_gdal = Module('r.out.gdal')
             from_np_raster = garray.array()
             from_np_raster[...] = new_dsm
-            from_np_raster.write('ny_rast')
+            from_np_raster.write('ny_rast',overwrite=True)
             print(from_np_raster)
             gcore.run_command('r.viewshed', overwrite=True, memory=assigned_mem, input='ny_rast', output='viewshed', max_distance=distance, coordinates=point, observer_elevation=observer_height)
             #r_viewshed(input=from_np_raster, output='viewshed', max_distance=1000, memory=1424, coordinates=(701495,6201503), observer_elevation=500.0)
