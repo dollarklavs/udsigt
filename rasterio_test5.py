@@ -8,7 +8,7 @@ from grass_session import Session
 from grass.pygrass.modules import Module
 from grass.script import core as gcore
 
-shp = '/home/jonas/barriere.shp'
+shp = '/home/jonas/udsigt/barriere.shp'
 vrt = '/tmp/dsm/nine_cells3.vrt'
 out_rst = '/tmp/dsm/burn_raster.tif'
 burn_viewshed_rst = '/tmp/dsm/burn_viewshed_rst.tif'
@@ -41,9 +41,9 @@ with fiona.open(shp, "r") as shapefile, rasterio.open(vrt) as src_rst:
             r_out_gdal = Module('r.out.gdal')
             from_np_raster = garray.array()
             from_np_raster[...] = new_dsm
-            from_np_raster.write(ny_rast)
+            from_np_raster.write('ny_rast')
             print(from_np_raster)
-            gcore.run_command('r.viewshed', input=ny_rast, output='viewshed', max_distance=1000, coordinates=(701495,6201503), observer_elevation=500.0)
+            gcore.run_command('r.viewshed', input='ny_rast', output='viewshed', max_distance=1000, coordinates=(701495,6201503), observer_elevation=500.0)
             #r_viewshed(input=from_np_raster, output='viewshed', max_distance=1000, memory=1424, coordinates=(701495,6201503), observer_elevation=500.0)
             r_out_gdal(overwrite=True, input='viewshed', output=burn_viewshed_rst)
 #    with rasterio.open(out_rst,'w',**out_meta) as dst: 
