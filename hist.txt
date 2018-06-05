@@ -1,0 +1,751 @@
+    1  sudo yum install byobu
+    2  yum check-updagte
+    3  yum check-update
+    4  reboot
+    5  ss -s
+    6  netstat -s
+    7  ss -l
+    8  ip addr
+    9  ip addr ls
+   10  ip addr ls dev
+   11  ip addr ls dev eth0
+   12  ifconfig
+   13  ip addr ls
+   14  ip addr ls dev enp0s3
+   15  ethtool
+   16  ethtool enp0s3
+   17  ip a
+   18  ping google.com
+   19  ping www.google.com
+   20  ping
+   21  ping localhost
+   22  vim /etc/sysconfig/network-scripts/ifcfg-enp0s3 
+   23  vi /etc/sysconfig/network-scripts/ifcfg-enp0s3 
+   24  sudo vi /etc/sysconfig/network-scripts/ifcfg-enp0s3 
+   25  reboot
+   26  ping google.com
+   27  ping www.google.com
+   28  sudo vi /etc/sysconfig/network-scripts/ifcfg-enp0s3 
+   29  reboot
+   30  ping www.google.com
+   31  sudo vi /etc/sysconfig/network-scripts/ifcfg-enp0s3 
+   32  reboot now
+   33  reboot
+   34  ping google.com
+   35  ping www.google.com
+   36  reboot
+   37  exit
+   38  sudo cat /etc/network
+   39  ll /etc/
+   40  ll /etc/networks 
+   41  sudo cat /etc/networks
+   42  sudo vi /etc/sysconfig/network-scripts/ifcfg-eth0 
+   43  nmcli d
+   44  nmtui
+   45  service network restart
+   46  sudo service network restart
+   47  ip a
+   48  sudo service network status
+   49  ping www.google.com
+   50  sudo yum install byobu
+   51  yum install epel-release
+   52  sudo yum install epel-release
+   53  sudo yum repolist
+   54  sudo yum install byobu
+   55  byobu enable
+   56  byobu --help
+   57  man byobo
+   58  byobu --help
+   59  byobu 
+   60  byobu-enable
+   61  reboot
+   62  ll
+   63  cd /tmp/
+   64  ll
+   65  cd grassdb_test/
+   66  ll
+   67  cd PERMANENT/
+   68  ll
+   69  cd PERMANENT/
+   70  ll
+   71  cd ..
+   72  ll
+   73  cd test/
+   74  ll
+   75  cd elevation/
+   76  ll
+   77  cd ..
+   78  cd PERMANENT/
+   79  ll
+   80  cd ..
+   81  ll
+   82  rm -r .
+   83  rm -r *
+   84  ll
+   85  cd ..
+   86  cd -
+   87  ll
+   88  cd grassdb_test/
+   89  ll
+   90  cd ..
+   91  ll
+   92  cd location/
+   93  ll
+   94  cd ..
+   95  rm location/
+   96  rmdir location/
+   97  rmdir --help
+   98  rm -r location/
+   99  ll
+  100  cd mytest/
+  101  ll
+  102  cd user/
+  103  ll
+  104  cd ..
+  105  cd .
+  106  cd ..
+  107  rm -r mytest/
+  108  ll
+  109  mkdir dsm
+  110  ll
+  111  cd dsm/
+  112  ll
+  113  cd ..
+  114  cd 
+  115  ll
+  116  vim test_python
+  117  vim test_python2.py 
+  118  vim test_session.py 
+  119  vim test_python3.py 
+  120  readlink -f /tmp/dsm/DSM_1km_6200_701.tif
+  121  vim test_session.py 
+  122  python test_session.py 
+  123  vim test_session.py 
+  124  python test_session.py 
+  125  vim test_session.py 
+  126  python test_session.py 
+  127  vim test_session.py 
+  128  python test_session.py 
+  129  vim test_session.py 
+  130  python test_session.py 
+  131  vim test_session.py 
+  132  python test_session.py 
+  133  vim test_session.py 
+  134  vim test_python2.py 
+  135  vim test_python3.py 
+  136  vim test_session.py 
+  137  python test_session.py 
+  138  vim test_session.py 
+  139  python test_session.py 
+  140  vim test_session.py 
+  141  python test_session.py 
+  142  vim test_session.py 
+  143  python test_session.py 
+  144  vim test_session.py 
+  145  python test_session.py 
+  146  vim test_session.py 
+  147  python test_session.py 
+  148  vim test_session.py 
+  149  cp test_session.py test_session2.py 
+  150  vim test_session2.py 
+  151  python test_session2.py 
+  152  ll /usr/lib64/grass74/etc/python/grass
+  153  ll /usr/lib64/grass74/etc/python/grass/pygrass/
+  154  ll /usr/lib64/grass74/etc/python/grass/pygrass/raster/
+  155  vim test_session2.py 
+  156  vim test_session.py 
+  157  ll
+  158  vim test_session.py 
+  159  pwd
+  160  vim test_session.py 
+  161  gdal_rasterize 
+  162  sudo yum install rasterio
+  163  sudo yum info gdal-bin
+  164  sudo yum info gdal*
+  165  sudo yum info libgdal*
+  166  pip
+  167  pip -U pip
+  168  pip install -U pip
+  169  sudo pip install -U pip
+  170  pip install rasterio
+  171  sudo pip install rasterio
+  172  sudo yum info gcc
+  173  sudo yum install gcc
+  174  sudo pip install rasterio
+  175  sudo yum info python*
+  176  sudo yum info python-de*
+  177  sudo yum install python-devel
+  178  sudo pip install rasterio
+  179  sudo yum info gcc-c++
+  180  sudo yum install gcc-c++
+  181  sudo pip install rasterio
+  182  ls
+  183  vim test_session.py 
+  184  vim rasterio_test
+  185  vim rasterio_test.py
+  186  sudo yum info fiona
+  187  sudo yum info fiona*
+  188  sudo yum install fiona
+  189  sudo yum info *fiona
+  190  sudo pip install fiona
+  191  vim rasterio_test.py
+  192  ll
+  193  pwd
+  194  vim rasterio_test.py
+  195  python rasterio_test.py 
+  196  vim rasterio_test.py
+  197  python rasterio_test.py 
+  198  vim rasterio_test.py
+  199  vim fiona_test.py
+  200  python fiona_test.py 
+  201  vim fiona_test.py
+  202  python fiona_test.py 
+  203  vim fiona_test.py
+  204  python fiona_test.py 
+  205  vim fiona_test.py
+  206  vim rasterio_test.py
+  207  ll
+  208  vim rasterio_test5.py 
+  209  chmod +x rasterio_test5.py 
+  210  ll
+  211  ./rasterio_test5.py 
+  212  vim rasterio_test5.py 
+  213  ./rasterio_test5.py 
+  214  vim rasterio_test5.py 
+  215  ./rasterio_test5.py 
+  216  vim rasterio_test5.py 
+  217  ./rasterio_test5.py 
+  218  vim rasterio_test5.py 
+  219  ./rasterio_test5.py 
+  220  vim rasterio_test5.py 
+  221  ./rasterio_test5.py 
+  222  vim rasterio_test5.py 
+  223  ./rasterio_test5.py 
+  224  vim rasterio_test5.py 
+  225  ./rasterio_test5.py 
+  226  vim rasterio_test5.py 
+  227  ./rasterio_test5.py 
+  228  vim rasterio_test5.py 
+  229  ./rasterio_test5.py 
+  230  vim rasterio_test5.py 
+  231  ./rasterio_test5.py 
+  232  vim rasterio_test5.py 
+  233  ./rasterio_test5.py 
+  234  vim rasterio_test5.py 
+  235  ./rasterio_test5.py 
+  236  vim rasterio_test5.py 
+  237  ./rasterio_test5.py 
+  238  vim rasterio_test5.py 
+  239  ./rasterio_test5.py 
+  240  vim rasterio_test5.py 
+  241  ./rasterio_test5.py 
+  242  vim rasterio_test5.py 
+  243  ./rasterio_test5.py 
+  244  vim rasterio_test5.py 
+  245  ./rasterio_test5.py 
+  246  vim rasterio_test5.py 
+  247  ./rasterio_test5.py 
+  248  vim rasterio_test5.py 
+  249  ./rasterio_test5.py 
+  250  vim rasterio_test5.py 
+  251  ./rasterio_test5.py 
+  252  vim rasterio_test5.py 
+  253  ./rasterio_test5.py 
+  254  vim rasterio_test5.py 
+  255  ./rasterio_test5.py 
+  256  vim rasterio_test5.py 
+  257  ./rasterio_test5.py 
+  258  vim rasterio_test5.py 
+  259  ./rasterio_test5.py 
+  260  vim rasterio_test5.py 
+  261  ./rasterio_test5.py 
+  262  vim rasterio_test5.py 
+  263  ./rasterio_test5.py 
+  264  vim rasterio_test5.py 
+  265  ./rasterio_test5.py 
+  266  vim rasterio_test5.py 
+  267  ./rasterio_test5.py 
+  268  vim rasterio_test5.py 
+  269  ./rasterio_test5.py 
+  270  vim rasterio_test5.py 
+  271  ./rasterio_test5.py 
+  272  pip --help
+  273  pip sow
+  274  pip show
+  275  pip list
+  276  pip search grass
+  277  vim rasterio_test5.py 
+  278  ./rasterio_test5.py 
+  279  vim rasterio_test5.py 
+  280  ./rasterio_test5.py 
+  281  vim rasterio_test5.py 
+  282  ./rasterio_test5.py 
+  283  vim rasterio_test5.py 
+  284  ./rasterio_test5.py 
+  285  vim rasterio_test5.py 
+  286  ./rasterio_test5.py 
+  287  vim rasterio_test5.py 
+  288  ./rasterio_test5.py 
+  289  vim rasterio_test5.py 
+  290  ./rasterio_test5.py 
+  291  vim rasterio_test5.py 
+  292  ./rasterio_test5.py 
+  293  vim rasterio_test5.py 
+  294  ./rasterio_test5.py 
+  295  exit
+  296  ll
+  297   
+  298  exit
+  299  byobu-enable
+  300  exit
+  301  history 
+  302  sudo yum install git
+  303  exit
+  304  byobu-enable
+  305  exit
+  306  cd /tmp/
+  307  ll
+  308  cd ..
+  309  l
+  310  ll
+  311  cd tmp/
+  312  ll
+  313  cd /home/
+  314  ll
+  315  cd jonas/
+  316  ll
+  317  cd Documents/
+  318  ll
+  319  cd grass_test/
+  320  ll
+  321  cd test/
+  322  ll
+  323  cd ..
+  324  cd DSM_620_70_TIF_UTM32-ETRS89/
+  325  ll
+  326  cd ..
+  327  ll
+  328  c d..
+  329  cd ..
+  330  ll
+  331  cd ..
+  332  ll
+  333  c d..
+  334  cd ..
+  335  ll
+  336  cd ..
+  337  ll
+  338  cd tmp/
+  339  ll
+  340  cd 
+  341  cd -
+  342  cd /tmp/
+  343  cd tmux-1000/
+  344  ll
+  345  cd default 
+  346  ll
+  347  cd ..
+  348  ll
+  349  cd /tmp/
+  350  ll
+  351  cd dsm
+  352  cd ~
+  353  ll
+  354  cd Documents/
+  355  ll
+  356  cd ..
+  357  cd udsigt/
+  358  ll
+  359  git status
+  360  mkdir /tmp/dsm
+  361  gzip
+  362  gzip /tmp/dsm/DSM_620_70_TIF_UTM32-ETRS89.zip 
+  363  ls /tmp/dsm
+  364  gzip -d /tmp/dsm/DSM_620_70_TIF_UTM32-ETRS89.zip.gz 
+  365  ls /tmp/dsm
+  366  gzip -S /tmp/dsm/DSM_620_70_TIF_UTM32-ETRS89.zip 
+  367  unzip /tmp/dsm/DSM_620_70_TIF_UTM32-ETRS89.zip su
+  368  man gunzip
+  369  gunzip -S /tmp/dsm/DSM_620_70_TIF_UTM32-ETRS89.zip 
+  370  man gunzip
+  371  sudo yum install unzip
+  372  unzip /tmp/dsm/DSM_620_70_TIF_UTM32-ETRS89.zip 
+  373  cd /tmp/
+  374  ll
+  375  cd dsm/
+  376  ll
+  377  ls -lh
+  378  unzip
+  379  cd -
+  380  cd ..
+  381  ll
+  382  cd usr/
+  383  cd ..
+  384  cd home/
+  385  ll
+  386  cd jonas/
+  387  ll
+  388  cd udsigt/
+  389  ll
+  390  rm *.tif *.md5
+  391  ll
+  392  cd /tmp/dsm/
+  393  ll
+  394  unzip DSM_620_70_TIF_UTM32-ETRS89.zip 
+  395  ll
+  396  rm DSM_620_70_TIF_UTM32-ETRS89.zip 
+  397  ll
+  398  ls DSM_1km_620{0-2}*
+  399  find . -type f -name "DSM_1km_620{0-2}*"
+  400  find . -type f -name "DSM_1km_620*"
+  401  find . -type f -name "DSM_1km_620[0-2]*"
+  402  find . -type f -name "DSM_1km_620[0-2]_70[0-2].tif"
+  403  buildvrt
+  404  gdalbuildvrt
+  405  gdalbuildvrt
+  406  find . -type f -name "DSM_1km_620[0-2]_70[0-2].tif" | gdalbuildvrt nine_cells3.vrt
+  407  man gdalbuildvrt
+  408  find . -type f -name "DSM_1km_620[0-2]_70[0-2].tif" -exec gdalbuildvrt nine_cells3.vrt {} +
+  409  ll
+  410  vim nine_cells3.vrt 
+  411  cd /home/jonas/
+  412  ll
+  413  cd udsigt/
+  414  ll
+  415  vim rasterio_test5.py 
+  416  ./rasterio_test5.py 
+  417  vim rasterio_test5.py 
+  418  ./rasterio_test5.py 
+  419  vim rasterio_test5.py 
+  420  ./rasterio_test5.py 
+  421  vim rasterio_test5.py 
+  422  git commit -m 'updated with quotes for grass'
+  423  git add rasterio_test5.py 
+  424  git commit -m 'updated with quotes for grass'
+  425  git push
+  426  vim rasterio_test5.py 
+  427  git add rasterio_test5.py 
+  428  git commit -m 'constants for input created'
+  429  git push
+  430  timeit
+  431  time
+  432  time -K ./rasterio_test5.py 
+  433  time ./rasterio_test5.py 
+  434  vim rasterio_test5.py 
+  435  time ./rasterio_test5.py 
+  436  vim rasterio_test5.py 
+  437  git add rasterio_test5.py 
+  438  git commit -m 'nu med overwrite=True i viewshed'
+  439  git push
+  440  shutdown now
+  441  git
+  442  ll
+  443  mkdir udsigt
+  444  ll
+  445  cp -h
+  446  cp --help
+  447  ls ll
+  448  ll
+  449  mv *.py barriere.* udsigt/
+  450  ll
+  451  cd udsigt/
+  452  ll
+  453  git
+  454  git init
+  455  l
+  456  ll
+  457  git add .
+  458  ll
+  459  git commit -m 'first commit'
+  460  git config --global user.name "Jonas Pedersen"
+  461  git config --global user.email dollarklavs@gmail.com
+  462  git commit --amend --reset-author
+  463  git config --global user.name "dollarklavs"
+  464  git commit --amend --reset-author
+  465  git remote add origin https://github.com/dollarklavs/udsigt.git
+  466  git remote -v
+  467  git push origin master
+  468  ll
+  469  pwd
+  470  ll /tmp/grassdb_test/
+  471  cd ..
+  472  cd -
+  473  rm -r /tmp/grassdb_test/
+  474  ll /tmp/grassdb_test/
+  475  rm -r /tmp/grassdb_test/
+  476  rm -r /tmp/grassdb_test/
+  477  cd /tmp/dsm/
+  478  ls
+  479  ls burn*
+  480  rm burn_viewshed_rst.tif 
+  481  cd /tmp/
+  482  l
+  483  ll
+  484  cd dsm/
+  485  ll
+  486  shutdown now
+  487  cd ~
+  488  ll
+  489  cd udsigt/
+  490  ll
+  491  vim rasterio_test5.py 
+  492  time ./rasterio_test5.py 
+  493  vim rasterio_test5.py 
+  494  time ./rasterio_test5.py 
+  495  vim rasterio_test5.py 
+  496  time ./rasterio_test5.py 
+  497  vim rasterio_test5.py 
+  498  time ./rasterio_test5.py 
+  499  ll
+  500  cd udsigt/
+  501  ll
+  502  vim rasterio_test5.py 
+  503  time ./rasterio_test5.py 
+  504  vim rasterio_test5.py 
+  505  git add rasterio_test5.py 
+  506  git commit -m 'flere konstanter'
+  507  git push
+  508  shutdown now
+  509  ll
+  510  cd udsigt/
+  511  ll
+  512  vim rasterio_test5.py 
+  513  time ./rasterio_test5.py 
+  514  vim rasterio_test5.py 
+  515  time ./rasterio_test5.py 
+  516  vim rasterio_test5.py 
+  517  time ./rasterio_test5.py 
+  518  vim rasterio_test5.py 
+  519  time ./rasterio_test5.py 
+  520  vim rasterio_test5.py 
+  521  time ./rasterio_test5.py 
+  522  git add rasterio_test5.py 
+  523  git commit -m 'more overwrite'
+  524  git push
+  525  shutdown
+  526  shutdown now
+  527  cd /tmp/
+  528  ll
+  529  rm -r grassdb_test/
+  530  cd ~
+  531  cd udsigt/
+  532  vim rasterio_test5.py 
+  533  shutdown now
+  534  cd ..
+  535  ll
+  536  wget https://trac.osgeo.org/postgis/attachment/ticket/4075/st_union_test.zip
+  537  ll
+  538  ls -lh
+  539  rm st_union_test.zip 
+  540  wget
+  541  sudo yum search postgis
+  542  sudo yum info postgis
+  543  yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-redhat10-10-2.noarch.rpm
+  544  sudo yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-redhat10-10-2.noarch.rpm
+  545  sudo yum search postgis
+  546  sudo yum install postgis24_10*
+  547  sudo systemctl status postgresql
+  548  sudo systemctl status 
+  549  sudo systemctl 
+  550  psql
+  551  /usr/pgsql-10/bin/postgresql10-setup
+  552  ll /usr/pgsql-10/bin
+  553  ll /usr/pgsql-10
+  554  service
+  555  service --status-all
+  556  ll /usr/pgsql-10/bin
+  557  sudo yum search postgres
+  558  sudo yum info postgres
+  559  sudo yum info postgresql
+  560  sudo yum install postgresql10-server
+  561  ll /usr/pgsql-10/bin
+  562  /usr/pgsql-10/bin/postgresql-10-setup initdb
+  563  sudo /usr/pgsql-10/bin/postgresql-10-setup initdb
+  564  sudo systemctl postgresql
+  565  sudo systemctl status postgresql-10
+  566  sudo systemctl start postgresql-10
+  567  sudo systemctl status postgresql-10
+  568  psql
+  569  psql -U postgres
+  570  su postgres
+  571  sudo su postgres
+  572  psql
+  573  sudo vim /var/lib/pgsql/10/data/pg_hba.conf
+  574  sudo systemctl reload postgresql-10
+  575  psql
+  576  sudo systemctl enable postgresql-10
+  577  sudo systemctl restart postgresql-10
+  578  psql
+  579  sudo vim /var/lib/pgsql/10/data/pg_hba.conf
+  580  psql -U jonas
+  581  psql -U postgres
+  582  exit
+  583  sudo vim /var/lib/pgsql/10/data/pg_hba.conf
+  584  psql -U jonas
+  585  sudo systemctl restart postgresql-10
+  586  psql -U jonas
+  587  sudo vim /var/lib/pgsql/10/data/pg_hba.conf
+  588  sudo systemctl restart postgresql-10
+  589  psql -U jonas
+  590  sudo su postgres
+  591  sudo vim /var/lib/pgsql/10/data/pg_hba.conf
+  592  sudo su postgres
+  593  sudo systemctl restart postgresql-10
+  594  sudo su postgres
+  595  sudo vim /var/lib/pgsql/10/data/pg_hba.conf
+  596  sudo systemctl restart postgresql-10
+  597  psql -U jonas
+  598  sudo vim /var/lib/pgsql/10/data/pg_hba.conf
+  599  sudo systemctl restart postgresql-10
+  600  psql -U jonas
+  601  sudo vim /var/lib/pgsql/10/data/pg_hba.conf
+  602  sudo systemctl restart postgresql-10
+  603  sudo systemctl staus postgresql-10
+  604  sudo systemctl status postgresql-10
+  605  sudo vim /var/lib/pgsql/10/data/pg_hba.conf
+  606  sudo systemctl status postgresql-10
+  607  sudo systemctl restart postgresql-10
+  608  psql -U postgres
+  609  sudo vim /var/lib/pgsql/10/data/pg_hba.conf
+  610  sudo systemctl restart postgresql-10
+  611  psql -U jonas
+  612  sudo su postgres
+  613  sudo vim /var/lib/pgsql/10/data/pg_hba.conf
+  614  sudo systemctl reload postgresql-10
+  615  psql -U jonas
+  616  psql -U jonas -d postgres
+  617  curl 
+  618  curl https://trac.osgeo.org/postgis/attachment/ticket/4075/st_union_test.zip
+  619  curl --help
+  620  ll
+  621  cd 
+  622  ll
+  623  wget https://trac.osgeo.org/postgis/attachment/ticket/4075/st_union_test.zip 
+  624  ll
+  625  vim st_union_test.zip 
+  626  rm st_union_test.zip 
+  627  wget https://trac.osgeo.org/postgis/raw-attachment/ticket/4075/st_union_test.zip
+  628  ll
+  629  ls -lh
+  630  unzip
+  631  unzip st_union_test.zip 
+  632  ll
+  633  vim st_union_test.sql 
+  634  psql -U jonas -d jonas -f st_union_test.sql 
+  635  python
+  636  pip
+  637  pip install psycopg2
+  638  sudo pip install psycopg2
+  639  python
+  640  ll
+  641  cd ..
+  642  ll
+  643  cd /tmp/
+  644  ll
+  645  rm 1084_SHAPE_UTM32-EUREF89.zip 
+  646  ll
+  647  shp2pgsql --help
+  648  shp2pgsql
+  649  shp2pgsql -D -I -s 25832 BYGNING.shp temp_jonyp.nye_bygninger | psql -U jonas -d jonas
+  650  shp2pgsql -D -I -s 25832 BYGNING.shp temp_jonyp.nye_bygninger > nye.sql
+  651  psql -U jonas -d jonas -f nye.sql 
+  652  ll
+  653  rm BYGNING.*
+  654  ll
+  655  rm nye.sql 
+  656  cd
+  657  cd udsigt/
+  658  ll
+  659  cp base_viewshed.py pg_viewshed.py
+  660  ll
+  661  vim pg_viewshed.py 
+  662  python pg_viewshed.py 
+  663  vim pg_viewshed.py 
+  664  python pg_viewshed.py 
+  665  vim pg_viewshed.py 
+  666  python pg_viewshed.py 
+  667  vim pg_viewshed.py 
+  668  python pg_viewshed.py 
+  669  vim pg_viewshed.py 
+  670  python pg_viewshed.py 
+  671  vim pg_viewshed.py 
+  672  python pg_viewshed.py 
+  673  vim pg_viewshed.py 
+  674  python pg_viewshed.py 
+  675  vim pg_viewshed.py 
+  676  python pg_viewshed.py 
+  677  vim pg_viewshed.py 
+  678  python pg_viewshed.py 
+  679  vim pg_viewshed.py 
+  680  python pg_viewshed.py 
+  681  vim pg_viewshed.py 
+  682  python pg_viewshed.py 
+  683  vim pg_viewshed.py 
+  684  python pg_viewshed.py 
+  685  vim pg_viewshed.py 
+  686  python pg_viewshed.py 
+  687  vim pg_viewshed.py 
+  688  python pg_viewshed.py 
+  689  vim pg_viewshed.py 
+  690  python pg_viewshed.py 
+  691  vim pg_viewshed.py 
+  692  python pg_viewshed.py 
+  693  vim pg_viewshed.py 
+  694  python pg_viewshed.py 
+  695  vim pg_viewshed.py 
+  696  python pg_viewshed.py 
+  697  vim pg_viewshed.py 
+  698  python pg_viewshed.py 
+  699  vim pg_viewshed.py 
+  700  python pg_viewshed.py 
+  701  git status
+  702  ll
+  703  git status
+  704  git add base_viewshed.py 
+  705  git add fionatest.py 
+  706  git add pg_viewshed.py 
+  707  git add psycopg2_test.py 
+  708  git commit -m 'ny udgave med postgis forbindelse'
+  709  git push
+  710  git status
+  711  vim pg_viewshed.py 
+  712  ll
+  713  vim pg_viewshed.py 
+  714  ll /tmp/
+  715  ll /tmp/dsm/
+  716  vim pg_viewshed.py 
+  717  ll
+  718  chmod +x argparse_test.py 
+  719  ll
+  720  ./argparse_test.py /tmp/dsm/DSM_1km_6203_707.tif 
+  721  ./argparse_test.py -f /tmp/dsm/DSM_1km_6203_707.tif 
+  722  which gdalbuildvrt
+  723  ll
+  724  ./argparse_test.py -f /tmp/dsm/DSM_1km_6203_707.tif 
+  725  ./argparse_test.py -f /tmp/dsm/DSM_1km_6203_705.tif 
+  726  ./argparse_test.py -f /tmp/dsm/DSM_1km_6203_709.tif 
+  727  ./argparse_test.py -f /tmp/dsm/DSM_1km_6201_707.tif 
+  728  /usr/bin/gdalbuildvrt DSM_1km_6201_707.vrt /tmp/dsm/DSM_1km_6199_705.tif /tmp/dsm/DSM_1km_6200_705.tif /tmp/dsm/DSM_1km_6201_705.tif /tmp/dsm/DSM_1km_6202_705.tif /tmp/dsm/DSM_1km_6203_705.tif /tmp/dsm/DSM_1km_6199_706.tif /tmp/dsm/DSM_1km_6200_706.tif /tmp/dsm/DSM_1km_6201_706.tif /tmp/dsm/DSM_1km_6202_706.tif /tmp/dsm/DSM_1km_6203_706.tif /tmp/dsm/DSM_1km_6199_707.tif /tmp/dsm/DSM_1km_6200_707.tif /tmp/dsm/DSM_1km_6201_707.tif /tmp/dsm/DSM_1km_6202_707.tif /tmp/dsm/DSM_1km_6203_707.tif /tmp/dsm/DSM_1km_6199_708.tif /tmp/dsm/DSM_1km_6200_708.tif /tmp/dsm/DSM_1km_6201_708.tif /tmp/dsm/DSM_1km_6202_708.tif /tmp/dsm/DSM_1km_6203_708.tif /tmp/dsm/DSM_1km_6199_709.tif /tmp/dsm/DSM_1km_6200_709.tif /tmp/dsm/DSM_1km_6201_709.tif /tmp/dsm/DSM_1km_6202_709.tif /tmp/dsm/DSM_1km_6203_709.tif
+  729  ./argparse_test.py -f /tmp/dsm/DSM_1km_6204_703.tif 
+  730  /usr/bin/gdalbuildvrt DSM_1km_6204_703.vrt /tmp/dsm/DSM_1km_6202_701.tif /tmp/dsm/DSM_1km_6203_701.tif /tmp/dsm/DSM_1km_6204_701.tif /tmp/dsm/DSM_1km_6205_701.tif /tmp/dsm/DSM_1km_6206_701.tif /tmp/dsm/DSM_1km_6202_702.tif /tmp/dsm/DSM_1km_6203_702.tif /tmp/dsm/DSM_1km_6204_702.tif /tmp/dsm/DSM_1km_6205_702.tif /tmp/dsm/DSM_1km_6206_702.tif /tmp/dsm/DSM_1km_6202_703.tif /tmp/dsm/DSM_1km_6203_703.tif /tmp/dsm/DSM_1km_6204_703.tif /tmp/dsm/DSM_1km_6205_703.tif /tmp/dsm/DSM_1km_6206_703.tif /tmp/dsm/DSM_1km_6202_704.tif /tmp/dsm/DSM_1km_6203_704.tif /tmp/dsm/DSM_1km_6204_704.tif /tmp/dsm/DSM_1km_6205_704.tif /tmp/dsm/DSM_1km_6206_704.tif /tmp/dsm/DSM_1km_6202_705.tif /tmp/dsm/DSM_1km_6203_705.tif /tmp/dsm/DSM_1km_6204_705.tif /tmp/dsm/DSM_1km_6205_705.tif /tmp/dsm/DSM_1km_6206_705.tif
+  731  ./argparse_test.py -f /tmp/dsm/DSM_1km_6204_703.tif 
+  732  qc
+  733  ./argparse_test.py -f /tmp/dsm/DSM_1km_6204_703.tif 
+  734  ll
+  735* cat DSM_1km_6200_703.vrt 
+  736  ./argparse_test.py -f /tmp/dsm/DSM_1km_6200_703.tif 
+  737  ll
+  738  less DSM_1km_6200_703.vrt 
+  739  ./argparse_test.py -f /tmp/dsm/DSM_1km_6200_703.tif 
+  740  ll /tmp/dsm/DSM_1km_6199_705.tif
+  741  ll /tmp/dsm/DSM_1km_6200_705.tif
+  742  ./argparse_test.py -f /tmp/dsm/DSM_1km_6204_703.tif 
+  743  time ./argparse_test.py -f /tmp/dsm/DSM_1km_6204_703.tif 
+  744  ll
+  745  ./view_func.py 
+  746  ll
+  747  vim pg_viewshed.py 
+  748  ./view_func.py 
+  749  vim count.txt 
+  750  ./view_func.py 
+  751  history > hist.txt
