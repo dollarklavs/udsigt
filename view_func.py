@@ -9,6 +9,12 @@ from grass.pygrass.modules import Module
 from grass.script import core as gcore
 import psycopg2
 
+assigned_mem=4000
+distance = 100
+observer_height = 10
+point = (701495,6201503)
+
+
 query = """SELECT jsonb_build_object(                                                                                          
 'type',     'FeatureCollection',
     'features', jsonb_agg(features)
@@ -64,13 +70,10 @@ vrt = '/tmp/dsm/nine_cells3.vrt'
 out_rst = '/tmp/dsm/burn_raster.tif'
 burn_viewshed_rst = '/tmp/dsm/burn_viewshed_rst.tif'
 grassdb = '/tmp/grassdb_test'
+total_cells_output = '/home/jonas/udsigt/count.txt'
 
-assigned_mem=4000
-distance = 2000
-observer_height = 10
-point = (701495,6201503)
-
-def viewshed(vrt,list_of_dicts,distance,point,observer_height,burn_viewshed_rst)
+def viewshed(vrt,list_of_dicts,distance,point,
+             observer_height,grassdb,burn_viewshed_rst,total_cells_output):
     with rasterio.open(vrt) as src_rst:
 
         dsm = src_rst.read()
@@ -101,15 +104,24 @@ def viewshed(vrt,list_of_dicts,distance,point,observer_height,burn_viewshed_rst)
                 r_viewshed = Module('r.viewshed')
                 r_out_gdal = Module('r.out.gdal')
                 r_stats = Module('r.stats')
+                r_univar = Module('r.univar')
                 from_np_raster = garray.array()
                 from_np_raster[...] = new_dsm
                 from_np_raster.write('ny_rast',overwrite=True)
                 print(from_np_raster)
-                gcore.run_command('r.viewshed', overwrite=True, memory=assigned_mem, input='ny_rast', output='viewshed', max_distance=distance, coordinates=point, observer_elevation=observer_height)
-                visible_cells = r_stats(flags='nc',in='viewshed')
+                gcore.run_command('r.viewshed', overwrite=True, memory=2000, input='ny_rast', output='viewshed', max_distance=distance, coordinates=point, observer_elevation=observer_height)
+                r_stats(flags='nc',overwrite=True,input='viewshed',output=total_cells_output)
+                with open(total_cells_output) as tcls:
+                    counts = []
+                    for line in tcls:
+                        nbr = int(line.split()[-1])
+                        counts.append(nbr)
+                # summary = r_univar(map='viewshed')
                 #r_viewshed(input=from_np_raster, output='viewshed', max_distance=1000, memory=1424, coordinates=(701495,6201503), observer_elevation=500.0)
                 r_out_gdal(overwrite=True, input='viewshed', output=burn_viewshed_rst)
-    return visible_cells
+    return sum(counts) #visible_cells
     #    with rasterio.open(out_rst,'w',**out_meta) as dst: 
     #        dst.write(new_dsm.astype(rasterio.int16), 1)
-
+vis = viewshed(vrt,list_of_dicts,distance,point,
+             observer_height,grassdb,burn_viewshed_rst,total_cells_output)
+print(vis)
