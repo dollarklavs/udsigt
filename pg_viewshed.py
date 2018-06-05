@@ -8,7 +8,6 @@ from grass_session import Session
 from grass.pygrass.modules import Module
 from grass.script import core as gcore
 import psycopg2
-import json
 
 query = """SELECT jsonb_build_object(                                                                                          
 'type',     'FeatureCollection',
