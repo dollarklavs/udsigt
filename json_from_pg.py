@@ -13,70 +13,101 @@ if __name__ == "__main__":
                        calculation has to be done""")
     args = parser.parse_args()
 
-file_obj = ExtendFileToFiles('.vrt', '/tmp/', grid_size=5, input_file=args.file)
-point = tuple(e * 1000 for e in file_obj.point)
-print(point)
-# point = (701495,6201503)
-
-class QueryIters():
-    def __init__(self, lower_left_coord, extent):
-        self.lower_left_coord = lower_left_coord
-        self.extent = extent
-        self.envelope = spatial_envelope(self.lower_left_coord, self.extent)
-        self.query_building_w_height = """
-                    SELECT jsonb_build_object(
-                          'type',       'Feature',
-                              'id',         gid,
-                          'geometry',   ST_AsGeoJSON(geom)::jsonb,
-                              'properties', to_jsonb(inputs) - 'gid' -
-                              'geom'
-                                ) AS feature
-                      FROM (
-                            SELECT
-                              gid
-                             ,geom
-                             ,fot_id
-                             ,avg(hoejde) hoejde
-                            FROM (
-                                      select
-                                        gid
-                                       ,geom
-                                       ,fot_id
-                                       ,st_z((st_dumppoints(geom)).geom ) hoejde
-                                      from temp_jonyp.nye_bygninger) foo
-                            where st_intersects(foo.geom,
-                            st_setsrid( ST_MakeEnvelope(%s, %s, %s, %s),25832) )
-                              group by
+query_building_w_height2 = """
+            SELECT jsonb_build_object(
+                  'type',       'Feature',
+                      'id',         gid,
+                  'geometry',   ST_AsGeoJSON(geom)::jsonb,
+                      'properties', to_jsonb(inputs) - 'gid' -
+                      'geom'
+                        ) AS feature
+              FROM (
+                    SELECT
+                      gid
+                     ,geom
+                     ,fot_id
+                     ,avg(hoejde) hoejde
+                    FROM (
+                              select
                                 gid
                                ,geom
-                               ,fot_id )
-                        inputs;"""
+                               ,fot_id
+                               ,st_z((st_dumppoints(geom)).geom ) hoejde
+                              from temp_jonyp.nye_bygninger) foo
+                    where st_intersects(foo.geom,
+                    st_setsrid( ST_MakeEnvelope({}, {}, {}, {}),25832) )
+                      group by
+                        gid
+                       ,geom
+                       ,fot_id )
+                inputs;"""
 
-        def spatial_envelope(self, lower_left_coord, extent):
-            upper_right_coord = tuple(e + extent for e in lower_left_coord)
-            return (lower_left_coord[1],lower_left_coord[0], upper_right_coord[1],
-                   upper_right_coord[0])
+query_building_w_height = """
+            SELECT jsonb_build_object(
+                  'type',       'Feature',
+                      'id',         gid,
+                  'geometry',   ST_AsGeoJSON(geom)::jsonb,
+                      'properties', to_jsonb(inputs) - 'gid' -
+                      'geom'
+                        ) AS feature
+              FROM (
+                    SELECT
+                      gid
+                     ,geom
+                     ,fot_id
+                     ,avg(hoejde) hoejde
+                    FROM (
+                              select
+                                gid
+                               ,geom
+                               ,fot_id
+                               ,st_z((st_dumppoints(geom)).geom ) hoejde
+                              from temp_jonyp.nye_bygninger) foo
+                    where st_intersects(foo.geom,
+                    st_setsrid( ST_MakeEnvelope(%s, %s, %s, %s),25832) )
+                      group by
+                        gid
+                       ,geom
+                       ,fot_id )
+                inputs;"""
 
-        def connect_cursor(dbname, user, password, query, extent)
-            try:
-               conn = psycopg2.connect(dbname=dbname, user=user,
-                                       password=password)
-            except:
-               print('unable to connect')
+class QueryIters():
+    def __init__(self, lower_left_coord, extent, query):
+        self.lower_left_coord = lower_left_coord
+        self.extent = extent
+        self.envelope = self.spatial_envelope(self.lower_left_coord, self.extent)
+        print(self.envelope)
+        self.query = query.format(*self.envelope)
+        self.conn = psycopg2.connect(dbname='jonas', user='jonas',
+                                password='logger')
+        self.cur = self.conn.cursor()
+        print(self.cur.mogrify(self.query, self.envelope)
+        self.results = self.cur.execute(self.query, self.envelope)
+        print(type(self.results))
 
-            cur = conn.cursor()
+    def spatial_envelope(self, lower_left_coord, extent):
+        upper_right_coord = tuple(e + extent for e in lower_left_coord)
+        return (lower_left_coord[1],lower_left_coord[0], upper_right_coord[1],
+               upper_right_coord[0])
 
-            try:
-                cur.execute(query, extent)
-            #    as_tuple = cur.fetchone()
-                # as_dict = as_tuple[0]
-            except:
-                print("couldn't execute query")
+#     def __enter__(self):
+#         self.conn = psycopg2.connect(dbname='jonas', user='jonas',
+#                                 password='logger')
+#         self.cur = self.conn.cursor()
+#         print(self.cur.mogrify(self.query, self.envelope))
+#         self.results = self.cur.execute(self.query, self.envelope)
+#         print(type(self.results))
+# 
+#     def __iter__(self):
+#         for result in self.results:
+#             yield result
+# 
+#     def __exit__(self, exc_type, exc_value, exc_traceback):
+#         self.conn.close()
 
-            # list_of_dicts = as_dict["features"]
-            for row in cur:
-                print(row)
-                
-            print(query2)
-            # print(as_tuple)
-            conn.close()
+file_obj = ExtendFileToFiles('.vrt', '/tmp/', grid_size=5, input_file=args.file)
+point = tuple(e * 1000 for e in file_obj.point)
+
+json = QueryIters(point, 1000, query_building_w_height)
+for j in json:
+    print(j)
