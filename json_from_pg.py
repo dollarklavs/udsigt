@@ -14,35 +14,6 @@ if __name__ == "__main__":
                        calculation has to be done""")
     args = parser.parse_args()
 
-query_building_w_height2 = """
-            SELECT jsonb_build_object(
-                  'type',       'Feature',
-                      'id',         gid,
-                  'geometry',   ST_AsGeoJSON(geom)::jsonb,
-                      'properties', to_jsonb(inputs) - 'gid' -
-                      'geom'
-                        ) AS feature
-              FROM (
-                    SELECT
-                      gid
-                     ,geom
-                     ,fot_id
-                     ,avg(hoejde) hoejde
-                    FROM (
-                              select
-                                gid
-                               ,geom
-                               ,fot_id
-                               ,st_z((st_dumppoints(geom)).geom ) hoejde
-                              from temp_jonyp.nye_bygninger) foo
-                    where st_intersects(foo.geom,
-                    st_setsrid( ST_MakeEnvelope({}, {}, {}, {}),25832) )
-                      group by
-                        gid
-                       ,geom
-                       ,fot_id )
-                inputs;"""
-
 query_building_w_height = """
             SELECT jsonb_build_object(
                   'type',       'Feature',
@@ -75,8 +46,7 @@ query_building_w_height = """
 class QueryIters():
     def __init__(self, lower_left_coord, extent, query, dbname, user, password):
         self.lower_left_coord = lower_left_coord
-        self.extent = extent
-        self.envelope = self.spatial_envelope(self.lower_left_coord, self.extent)
+        self.envelope = self.spatial_envelope(self.lower_left_coord, extent)
         print(self.envelope)
         self.query = query
         self.dbname = dbname
@@ -84,8 +54,9 @@ class QueryIters():
         self.password = password
         self.conn = psycopg2.connect(dbname=self.dbname, user=self.user,
                                      password=self.password) 
-        self.cur =self.conn.cursor()
+        self.cur = self.conn.cursor()
         self.cur.execute(self.query, self.envelope) 
+        self.sent_query = self.cur.mogrify(self.query, self.envelope) 
         self.iterator = self.return_iter_from_cursor(self.cur)
     
     def result_iter(self, cursor, arraysize=1000):
@@ -115,6 +86,6 @@ file_obj = ExtendFileToFiles('.vrt', '/tmp/', grid_size=5, input_file=args.file)
 point = tuple(e * 1000 for e in file_obj.point)
 db_iter = QueryIters(point, 1000, query_building_w_height, 'jonas', 'jonas',
                      'logger')
-
-for i in db_iter.iterator:
-    print(str(i) + '\n\n')
+print(db_iter.sent_query)
+# for i in db_iter.iterator:
+#     print(str(i) + '\n\n')
