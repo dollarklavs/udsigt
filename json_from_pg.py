@@ -4,6 +4,7 @@ import argparse
 import os
 import subprocess
 import re
+from contextlib import contextmanager
 from extend_file_to_files import ExtendFileToFiles
 
  
@@ -72,42 +73,48 @@ query_building_w_height = """
                 inputs;"""
 
 class QueryIters():
-    def __init__(self, lower_left_coord, extent, query):
+    def __init__(self, lower_left_coord, extent, query, dbname, user, password):
         self.lower_left_coord = lower_left_coord
         self.extent = extent
         self.envelope = self.spatial_envelope(self.lower_left_coord, self.extent)
         print(self.envelope)
-        self.query = query.format(*self.envelope)
-        self.conn = psycopg2.connect(dbname='jonas', user='jonas',
-                                password='logger')
-        self.cur = self.conn.cursor()
-        print(self.cur.mogrify(self.query, self.envelope)
-        self.results = self.cur.execute(self.query, self.envelope)
-        print(type(self.results))
+        self.query = query
+        self.dbname = dbname
+        self.user = user
+        self.password = password
+        self.conn = psycopg2.connect(dbname=self.dbname, user=self.user,
+                                     password=self.password) 
+        self.cur =self.conn.cursor()
+        self.cur.execute(self.query, self.envelope) 
+        self.iterator = self.return_iter_from_cursor(self.cur)
+    
+    def result_iter(self, cursor, arraysize=1000):
+        """An iterator that uses fetchmany to keep memory usage down"""
+        while True:
+            results = cursor.fetchmany(arraysize)
+            if not results:
+                break
+            for result in results:
+                yield result
+
+    def return_iter_from_cursor(self, cursor):
+        try:
+            return self.result_iter(cursor)
+        except:
+            print('cant iterate')
 
     def spatial_envelope(self, lower_left_coord, extent):
         upper_right_coord = tuple(e + extent for e in lower_left_coord)
         return (lower_left_coord[1],lower_left_coord[0], upper_right_coord[1],
                upper_right_coord[0])
-
-#     def __enter__(self):
-#         self.conn = psycopg2.connect(dbname='jonas', user='jonas',
-#                                 password='logger')
-#         self.cur = self.conn.cursor()
-#         print(self.cur.mogrify(self.query, self.envelope))
-#         self.results = self.cur.execute(self.query, self.envelope)
-#         print(type(self.results))
-# 
-#     def __iter__(self):
-#         for result in self.results:
-#             yield result
-# 
-#     def __exit__(self, exc_type, exc_value, exc_traceback):
-#         self.conn.close()
+    
+    def __del__(self):
+        self.conn.close()
 
 file_obj = ExtendFileToFiles('.vrt', '/tmp/', grid_size=5, input_file=args.file)
 point = tuple(e * 1000 for e in file_obj.point)
+db_iter = QueryIters(point, 1000, query_building_w_height, 'jonas', 'jonas',
+                     'logger')
 
-json = QueryIters(point, 1000, query_building_w_height)
-for j in json:
-    print(j)
+for i in db_iter.iterator:
+    print(str(i) + '\n\n')
