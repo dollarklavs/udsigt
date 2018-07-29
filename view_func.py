@@ -74,6 +74,7 @@ total_cells_output = '/home/jonas/udsigt/count.txt'
 
 def viewshed(vrt,list_of_dicts,distance,point,
              observer_height,grassdb,burn_viewshed_rst,total_cells_output):
+    ## deles op - første funktion
     with rasterio.open(vrt) as src_rst:
 
         dsm = src_rst.read()
@@ -89,6 +90,7 @@ def viewshed(vrt,list_of_dicts,distance,point,
                                        invert=True)
         new_dsm = np.copy(np.squeeze(dsm)) #Forstaer ikke hvorfor, men dsm'en har en ekstra dimension, 
                                            #som jeg fjerner med squeeze, saa den passer med result dsm'en
+    ## deles op - anden funktion, måske
         with rasterio.Env():
             result = features.rasterize(
                                         ((feature['feature']['geometry'],np.int(feature['feature']['properties']['hoejde'])
@@ -99,6 +101,7 @@ def viewshed(vrt,list_of_dicts,distance,point,
                                           all_touched=True)             
             new_dsm[mask] = result[mask] 
 
+    ## deles op - tredje funktion
             with Session(gisdb=grassdb, location="test",create_opts=vrt):
                 import grass.script.array as garray
                 r_viewshed = Module('r.viewshed')
@@ -111,6 +114,8 @@ def viewshed(vrt,list_of_dicts,distance,point,
                 print(from_np_raster)
                 gcore.run_command('r.viewshed', overwrite=True, memory=2000, input='ny_rast', output='viewshed', max_distance=distance, coordinates=point, observer_elevation=observer_height)
                 r_stats(flags='nc',overwrite=True,input='viewshed',output=total_cells_output)
+                ## finde ud af hvordan r_stats kan outputte til noget som
+                ## python kan læse direkte
                 with open(total_cells_output) as tcls:
                     counts = []
                     for line in tcls:
@@ -122,6 +127,9 @@ def viewshed(vrt,list_of_dicts,distance,point,
     return sum(counts) #visible_cells
     #    with rasterio.open(out_rst,'w',**out_meta) as dst: 
     #        dst.write(new_dsm.astype(rasterio.int16), 1)
+
+## tilføj funktion der deleter grass-db'en
+
 vis = viewshed(vrt,list_of_dicts,distance,point,
              observer_height,grassdb,burn_viewshed_rst,total_cells_output)
 print(vis)
