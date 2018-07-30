@@ -12,18 +12,18 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
 
-class ExtendFileToFiles(): 
-    def __init__(self, vrt_extension, vrt_destination, input_file, grid_size=5,
-                 extension='.tif'):
+class ExtendFileToFiles(): ## bedre navn der er noget med at gruppere, samle, appende filer. Husk at navnet skal være et objekt/navneord
+    def __init__(self, input_file, destination='/tmp/', grid_size=5,
+                 extension='.vrt'):
         self.gdalbuildvrt = '/usr/bin/gdalbuildvrt'
-        self.vrt_destination = '/tmp/'
+        self.vrt_destination = destination
         self.input_file = input_file
         self.grid_size = grid_size
         self.filename, self.file_extension = os.path.splitext(self.input_file)
         self.abspath = os.path.dirname(self.input_file)
         self.base_name = os.path.basename(self.filename)
         self.prefix = self.base_name[0:8]
-        self.base_vrt = self.base_name + vrt_extension
+        self.base_vrt = self.base_name + extension
         self.vrt_abs = os.path.join(vrt_destination, self.base_vrt)
         self.pattern =  '.*(\d{4})_(\d{3}).*'
         self.point = self.x_y_from_name(self.pattern, self.base_name)
@@ -37,7 +37,8 @@ class ExtendFileToFiles():
         self.files_as_string = self.paths_as_string()
         self.cmd_list = [self.gdalbuildvrt, '-overwrite', self.vrt_abs]
         self.cmd_as_string = ' '.join(self.cmd_list) + ' ' + self.files_as_string
-
+	
+	## alle metoder skal helst navngives som udsagnsord
     def x_y_from_name(self, pattern, name):
         matches = re.match(self.pattern, self.base_name)
         str_tuple = matches.group(1, 2)
@@ -50,7 +51,7 @@ class ExtendFileToFiles():
                 for i in range(*grid_list) 
                 for u in range(*grid_list)]
 
-    def raster_bounding_box(self, list_lower_left_coords):
+    def raster_bounding_box(self, list_lower_left_coords): ## get_bbox
         lower_left_rast, upper_right_rast = list_lower_left_coords[0], list_lower_left_coords[-1]
         bbox = tuple([i * 1000 for i in lower_left_rast[::-1]] 
                      + [(i + 1) * 1000 for i in upper_right_rast[::-1]])
@@ -67,6 +68,8 @@ class ExtendFileToFiles():
     def paths_as_string(self):
         return ' '.join([os.path.join(self.abspath,i) 
                          for i in self.extend_to_files])
+	
+	## metode der tager subprocess og outputter vrt (build_vrt)
 
 if __name__ == "__main__":
     file_obj = ExtendFileToFiles('.vrt','/tmp/', args.file, grid_size=5)
