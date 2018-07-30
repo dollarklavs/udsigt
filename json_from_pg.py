@@ -52,7 +52,7 @@ class QueryIters():
         self.dbname = dbname
         self.user = user
         self.password = password
-        self.conn = psycopg2.connect(dbname=self.dbname, user=self.user,
+        self.conn = psycopg2.connect(dbname=self.dbname, user=self.user, ## flyt ud af __init__
                                      password=self.password) 
         self.cur = self.conn.cursor()
         self.cur.execute(self.query, self.envelope) 
@@ -74,7 +74,7 @@ class QueryIters():
         except:
             print('cant iterate')
 
-    def spatial_envelope(self, lower_left_coord, extent):
+    def spatial_envelope(self, lower_left_coord, extent): ## håndter i extend_file_to_files
         upper_right_coord = tuple(e + extent for e in lower_left_coord)
         return (lower_left_coord[1],lower_left_coord[0], upper_right_coord[1],
                upper_right_coord[0])
