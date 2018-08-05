@@ -81,7 +81,8 @@ if __name__ == "__main__":
 
         for size, index in cell_sizes.iteritems():
             if size in abs_filename:
-                return size, abs_filename[index:] 
+                cell_id = abs_filename[index:] 
+                return size, cell_id
    
     celltype, cell_id = type_and_id_from_filename(args.file)
     print(celltype, cell_id)
@@ -97,3 +98,30 @@ if __name__ == "__main__":
 
     coord_tup = get_coord_tuple_from_id(cell_id)
     print(coord_tup)
+
+    def get_neigbouring_coords(self, grid_size, cell_extent, x_coor, y_coor):
+        grid_extent = grid_size / 2
+        grid_extent_meters = grid_extent * cell_extent
+        grid_list = [-grid_extent_meters, grid_extent_meters + 1, cell_extent]
+        return [(y_coor + u, x_coor + i) 
+                for i in range(*grid_list) 
+                for u in range(*grid_list)]
+
+    def raster_bounding_box(self, list_lower_left_coords, cell_extent): ## get_bbox
+        lower_left_rast, upper_right_rast = (list_lower_left_coords[0], 
+                                             list_lower_left_coords[-1]
+                                             + cell_extent)
+#         bbox = tuple([i * 1000 for i in lower_left_rast[::-1]] 
+#                      + [(i + 1) * 1000 for i in upper_right_rast[::-1]])
+#         return bbox
+
+
+    def file_grid(self, substr_len, arbi_prefix=None, type_prefix, coord_list, extension='.tif'):
+        return [arbi_prefix
+                + type_prefix
+                + str(i[0])[0:substr_len + 1]
+                + '_'
+                + str(i[1])[0:substr_len]
+                + extension
+                for i in coord_list]
+
