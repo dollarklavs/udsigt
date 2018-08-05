@@ -10,7 +10,7 @@ from grass.script import core as gcore
 import psycopg2
 
 assigned_mem=4000
-distance = 100
+distance = 2000
 observer_height = 10
 point = (705500,6205500)
 
@@ -72,6 +72,8 @@ burn_viewshed_rst = '/tmp/burn_viewshed_rst.tif'
 grassdb = '/tmp/grassdb_test'
 total_cells_output = '/tmp/count.txt'
 
+## for tif der indeholder mere en x, opret 4 symlinks med 500m celle navne
+## soerg for at regex kan handtere flere cifre
     
 def mask_rast_from_geom(raster_file, geom_iterator):
     """Returns a numpy mask of the same dimensions as the input raster and also
@@ -124,7 +126,16 @@ print(np_array)
 
 def calc_view(grassdb, location_dir, raster_meta, numpy_array, distance,
               observer_height, from_position, burn_viewshed_rst):
-    ## deles op - tredje funktion
+    """calculates a viewshed. Requires:
+        - grassdb, path to where Grass can establish a folder structrure
+        - location_dir, folder within grassdb
+        - raster_meta, geo-raster metadata supplied to Grass. Adopted by output
+        - numpy_array, adopts the raster_meta to become geo-aware:)
+        - distance, radius to calculate visibility within
+        - observer_height, height of the observation point
+        - from_position, latitude and longtitude of observer
+        - burn_viewshed_rst, output filepath of result
+    """
     with Session(gisdb=grassdb, location=location_dir, create_opts=raster_meta):
         import grass.script.array as garray
         r_viewshed = Module('r.viewshed')
@@ -135,26 +146,35 @@ def calc_view(grassdb, location_dir, raster_meta, numpy_array, distance,
         from_np_raster[...] = numpy_array
         from_np_raster.write('ny_rast',overwrite=True)
         print(from_np_raster)
-        gcore.run_command('r.viewshed', overwrite=True, memory=2000, 
-input='ny_rast', output='viewshed', max_distance=distance, 
-coordinates=from_position, observer_elevation=observer_height)
+        r_viewshed(input='ny_rast', overwrite=True, output='viewshed', max_distance=distance,
+                   memory=2560, coordinates=from_position,
+                   observer_elevation=observer_height)
         r_stats(flags='nc',overwrite=True,input='viewshed',output=total_cells_output)
         ## finde ud af hvordan r_stats kan outputte til noget som
         ## python kan laese direkte
-
-        counts = []
-        with open(total_cells_output) as tcls:
-            for line in tcls:
-                nbr = int(line.split()[-1])
-                counts.append(nbr)
-        # summary = r_univar(map='viewshed')
-        #r_viewshed(input=from_np_raster, output='viewshed', max_distance=1000, memory=1424, coordinates=(701495,6201503), observer_elevation=500.0)
         r_out_gdal(overwrite=True, input='viewshed', output=burn_viewshed_rst)
-        return sum(counts) #visible_cells
     #    with rasterio.open(out_rst,'w',**out_meta) as dst: 
     #        dst.write(new_dsm.astype(rasterio.int16), 1)
-cnt = calc_view(grassdb, 'test', vrt, np_array, distance, observer_height,
+calc_view(grassdb, 'test', vrt, np_array, distance, observer_height,
                 point, burn_viewshed_rst)
+
+def sum_column_from_file(file_name, column_index):
+    """from file with column structure (blank space separated) summarize the
+    column at the index given.
+    requires:
+        - path to file with column structure
+        - index of column with numeric values
+    returns:
+        - the sum of the column
+    """
+    counts = []
+    with open(file_name) as column_file:
+        for line in column_file:
+            number = int(line.split()[column_index])
+            counts.append(number)
+    return sum(counts)
+
+cnt = sum_column_from_file(total_cells_output, -1)
 print(cnt)
 ## tilfoej funktion der deleter grass-db'en
 
