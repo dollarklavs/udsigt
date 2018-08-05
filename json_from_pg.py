@@ -74,7 +74,7 @@ class QueryIters():
         except:
             print('cant iterate')
 
-    def spatial_envelope(self, lower_left_coord, extent): ## håndter i extend_file_to_files
+    def spatial_envelope(self, lower_left_coord, extent): ## haandter i extend_file_to_files
         upper_right_coord = tuple(e + extent for e in lower_left_coord)
         return (lower_left_coord[1],lower_left_coord[0], upper_right_coord[1],
                upper_right_coord[0])
@@ -82,10 +82,10 @@ class QueryIters():
     def __del__(self):
         self.conn.close()
 
-file_obj = ExtendFileToFiles('.vrt', '/tmp/', grid_size=5, input_file=args.file)
+file_obj = ExtendFileToFiles(args.file, '/tmp/', 5, '.vrt')
 point = tuple(e * 1000 for e in file_obj.point)
-db_iter = QueryIters(point, 1000, query_building_w_height, 'jonas', 'jonas',
-                     'logger')
+db_iter = QueryIters(point, 1000, query_building_w_height, 'geotest', 'jonas',
+                     'jonas')
 print(db_iter.sent_query)
-# for i in db_iter.iterator:
-#     print(str(i) + '\n\n')
+for i in db_iter.iterator:
+    print(str(i) + '\n\n')

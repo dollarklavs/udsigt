@@ -12,7 +12,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
 
-class ExtendFileToFiles(): ## bedre navn der er noget med at gruppere, samle, appende filer. Husk at navnet skal være et objekt/navneord
+class ExtendFileToFiles(): ## bedre navn der er noget med at gruppere, samle, appende filer. Husk at navnet skal vaere et objekt/navneord
     def __init__(self, input_file, destination='/tmp/', grid_size=5,
                  extension='.vrt'):
         self.gdalbuildvrt = '/usr/bin/gdalbuildvrt'
@@ -24,7 +24,7 @@ class ExtendFileToFiles(): ## bedre navn der er noget med at gruppere, samle, ap
         self.base_name = os.path.basename(self.filename)
         self.prefix = self.base_name[0:8]
         self.base_vrt = self.base_name + extension
-        self.vrt_abs = os.path.join(vrt_destination, self.base_vrt)
+        self.vrt_abs = os.path.join(self.vrt_destination, self.base_vrt)
         self.pattern =  '.*(\d{4})_(\d{3}).*'
         self.point = self.x_y_from_name(self.pattern, self.base_name)
         self.extended_coordinates = self.extended_coordinates(self.grid_size,
@@ -72,7 +72,7 @@ class ExtendFileToFiles(): ## bedre navn der er noget med at gruppere, samle, ap
 	## metode der tager subprocess og outputter vrt (build_vrt)
 
 if __name__ == "__main__":
-    file_obj = ExtendFileToFiles('.vrt','/tmp/', args.file, grid_size=5)
+    file_obj = ExtendFileToFiles(args.file, '/tmp/', 5,  '.vrt', )
     print(file_obj.cmd_as_string)
     print(file_obj.file_extension)
     subprocess.call(file_obj.cmd_as_string, shell=True)
