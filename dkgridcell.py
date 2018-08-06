@@ -126,10 +126,10 @@ if __name__ == "__main__":
     def subdivide(self, out_type, filename):
         cell_sizes = {'100km': 
                       [{extent : 100000}, 
-                       {substr_slice : -4}],                                         
+                       {substr_slice : -4}], 
                       '10km':
                       [{extent : 10000}, 
-                       {substr_slice : -6}],                                         
+                       {substr_slice : -6}], 
                       '1km' : 
                       [{extent : 1000}, 
                        {substr_slice : -8}], 
