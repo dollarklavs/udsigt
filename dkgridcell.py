@@ -108,13 +108,11 @@ if __name__ == "__main__":
                 for u in range(*grid_list)]
 
     def raster_bounding_box(self, list_lower_left_coords, cell_extent): ## get_bbox
-        lower_left_rast, upper_right_rast = (list_lower_left_coords[0], 
-                                             list_lower_left_coords[-1]
-                                             + cell_extent)
-#         bbox = tuple([i * 1000 for i in lower_left_rast[::-1]] 
-#                      + [(i + 1) * 1000 for i in upper_right_rast[::-1]])
-#         return bbox
-
+        coord_sort = sort(list_lower_left_coords, key = lambda x: (x[0], x[1])
+        lower_left_coord, upper_right_coord = coord_sort[0], 
+                                             coord_sort[-1]
+                                             + cell_extent
+        return lower_left_coord, upper_right_coord
 
     def file_grid(self, substr_len, arbi_prefix=None, type_prefix, coord_list, extension='.tif'):
         return [arbi_prefix
@@ -125,3 +123,30 @@ if __name__ == "__main__":
                 + extension
                 for i in coord_list]
 
+    def subdivide(self, out_type, filename):
+        cell_sizes = {'100km': 
+                      [{extent : 100000}, 
+                       {substr_slice : -4}],                                         
+                      '10km':
+                      [{extent : 10000}, 
+                       {substr_slice : -6}],                                         
+                      '1km' : 
+                      [{extent : 1000}, 
+                       {substr_slice : -8}], 
+                      '500m' : 
+                      [{extent : 500},
+                       {substr_slice : -10}],
+                      '250m' : 
+                      [{extent : 250}, 
+                       {substr_slice : -12}], 
+                      '100m' :
+                      [{extent : 100}, 
+                       {substr_slice : -10}] 
+                      }
+        type_cell, cell_id = type_and_id_from_filename(filename)
+        current_extent = cell_sizes['type_cell'][0]['extent']
+        ## SKRIV DET LIGE SOM EN CLASS OK!?
+
+
+        ## tilfoej extend i meter til cell sizes dic 
+        
