@@ -182,7 +182,7 @@ def calc_view(grassdb, location_dir, raster_meta, numpy_array, distance,
                                           str(z))
             print(creating)
             r_viewshed(input='ny_rast', verbose=True, overwrite=True, output=viewshedname,
-                       max_distance=distance, memory=1274, 
+                       max_distance=distance, memory=2900, 
                        coordinates=from_position, observer_elevation=z)
             r_stats(flags='nc',overwrite=True,input=viewshedname, 
                     output=count_out)
