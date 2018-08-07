@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import numpy as np
 import rasterio
 from rasterio import features
@@ -188,11 +189,14 @@ def calc_view(grassdb, location_dir, raster_meta, numpy_array, distance,
             writing_rst = message_rst_out.format(viewshedname, out_filepath) 
             print(writing_rst)
             r_out_gdal(overwrite=True, input=viewshedname, output=out_filepath)
-        message_rm_dir = 'removing directory {}'.format(location_dir)
+        workdir = grassdb + '/' + location_dir
+        message_rm_dir = 'removing directory {}'.format(workdir)
         print(message_rm_dir)
-        shutil.rmtree(location_dir)
+        shutil.rmtree(workdir)
 
-calc_view(grassdb, grass_locdir, vrt, np_array, distance, uuo_result)
+# calc_view(grassdb, grass_locdir, vrt, np_array, distance, uuo_result)
+pth = os.path.join(grassdb, grass_locdir)
+print(pth)
 
 def sum_column_from_file(file_name, column_index):
     """from file with column structure (blank space separated) summarize the
