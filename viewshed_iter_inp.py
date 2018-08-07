@@ -55,8 +55,9 @@ query = """SELECT jsonb_build_object(
 uuoer = """
         select uuoid, st_x(geom) x, st_y(geom) y, uuoz
         from temp_jonyp.uuoer
-        where fot_id = 1012269302
-
+        where fot_id = 1012269302 and uuoid in (2,1)
+        order by uuoz desc
+        limit 2
         """
 try:
    conn = psycopg2.connect(dbname='geotest', user='jonas', password='jonas')
@@ -106,7 +107,7 @@ def mask_rast_from_geom(raster_file, geom_iterator):
         dsm = src_rst.read()
         out_meta = src_rst.meta.copy()
         print(out_meta)
-        out_meta.update(dtype=rasterio.int16,driver='GTiff') 
+        out_meta.update(dtype=rasterio.float32, driver='GTiff') 
         mask = features.geometry_mask(
                                       [feature["feature"]["geometry"] for feature in
                                       geom_iterator ],
@@ -154,18 +155,20 @@ def calc_view(grassdb, location_dir, raster_meta, numpy_array, distance,
           - z height
     """
     with Session(gisdb=grassdb, location=location_dir, create_opts=raster_meta):
+        # Session creates a whole Grass python environment. This is why we import here
         import grass.script.array as garray
 
+        g_region = Module('g.region')
         r_viewshed = Module('r.viewshed')
         r_out_gdal = Module('r.out.gdal')
         r_stats = Module('r.stats')
         r_univar = Module('r.univar')
+
         from_np_raster = garray.array()
         from_np_raster[...] = numpy_array
-        from_np_raster.write('ny_rast',overwrite=True)
-        # print(from_np_raster)
+        from_np_raster.write('ny_rast', overwrite=True)
 
-
+        g_region(flags='p', raster='ny_rast')
         
         for uuo in id_lat_lon_z:
             viewshedname = 'vs_' + str(uuo[0])
@@ -178,8 +181,8 @@ def calc_view(grassdb, location_dir, raster_meta, numpy_array, distance,
             creating = message_crt.format(viewshedname, str(from_position),
                                           str(z))
             print(creating)
-            r_viewshed(input='ny_rast', overwrite=True, output=viewshedname,
-                       max_distance=distance, memory=2560, 
+            r_viewshed(input='ny_rast', verbose=True, overwrite=True, output=viewshedname,
+                       max_distance=distance, memory=1274, 
                        coordinates=from_position, observer_elevation=z)
             r_stats(flags='nc',overwrite=True,input=viewshedname, 
                     output=count_out)
@@ -188,15 +191,20 @@ def calc_view(grassdb, location_dir, raster_meta, numpy_array, distance,
             message_rst_out = 'Writing viewshed {} to file {}'
             writing_rst = message_rst_out.format(viewshedname, out_filepath) 
             print(writing_rst)
-            r_out_gdal(overwrite=True, input=viewshedname, output=out_filepath)
-        workdir = grassdb + '/' + location_dir
+            r_out_gdal(overwrite=True, input=viewshedname, output=out_filepath,
+                      createopt="COMPRESS=DEFLATE", type='Int16', flags='f', 
+                      format='GTiff')
+            g_region(flags='p', raster='ny_rast', zoom=viewshedname)
+        workdir = os.path.join(grassdb, location_dir)
         message_rm_dir = 'removing directory {}'.format(workdir)
+        g_region(flags='p')
         print(message_rm_dir)
         shutil.rmtree(workdir)
 
-# calc_view(grassdb, grass_locdir, vrt, np_array, distance, uuo_result)
-pth = os.path.join(grassdb, grass_locdir)
-print(pth)
+calc_view(grassdb, grass_locdir, vrt, np_array, distance, uuo_result)
+
+# pth = os.path.join(grassdb, grass_locdir)
+# print(pth)
 
 def sum_column_from_file(file_name, column_index):
     """from file with column structure (blank space separated) summarize the
