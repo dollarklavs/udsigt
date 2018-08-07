@@ -4,149 +4,113 @@ import os
 import subprocess
 import re
 
-if __name__ == "__main__":
+class DkGridCell():
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--file", help="""path to tif file for which
-                        calculation has to be done""")
-    args = parser.parse_args()
+# class variable with the cell type-id as key. The value is a list containing the extent
+# in meter and substr_slice, used as index from end of base filename to get the
+# cell identifier.
+    cell_types_data = {'100km': 
+                      [{'extent' : 100000}, 
+                       {'substr_slice' : -4}, 
+                       {'coord_slice' : -5}], 
+                      '10km':
+                      [{'extent' : 10000}, 
+                       {'substr_slice' : -6}, 
+                       {'coord_slice' : -4}], 
+                      '1km' : 
+                      [{'extent' : 1000}, 
+                       {'substr_slice' : -8}, 
+                       {'coord_slice' : -3}], 
+                      '500m' : 
+                      [{'extent' : 500},
+                       {'substr_slice' : -10},
+                       {'coord_slice' : -2}], 
+                      '250m' : 
+                      [{'extent' : 250}, 
+                       {'substr_slice' : -12}, 
+                       {'coord_slice' : -1}], 
+                      '100m' :
+                      [{'extent' : 100}, 
+                       {'substr_slice' : -10},
+                       {'coord_slice' : -2}] 
+                      }
+ 
+    def __init__(self, file_name):
+        self.filename, self.abs_filename, self.abs_path = self.get_filemeta(file_name)    
+        self.cell_type, self.cell_id, self.extent = self.type_id_extent_from_file(self.abs_filename)
+        self.ll_coord = self.get_coord_tuple_from_id(self.cell_id)
+        self.neigh_coords = None
+        self.bbox_ll, self.bbox_ur = None, None
+        self.neigh_files = None
 
-
-class ExtendFileToFiles(): ## bedre navn der er noget med at gruppere, samle, appende filer. Husk at navnet skal vaere et objekt/navneord
-    def __init__(self, input_file, destination='/tmp/', grid_size=5,
-                 extension='.vrt'):
-        self.gdalbuildvrt = '/usr/bin/gdalbuildvrt'
-        self.vrt_destination = destination
-        self.input_file = input_file
-        self.grid_size = grid_size
-        self.filename, self.file_extension = os.path.splitext(self.input_file)
-        self.abspath = os.path.dirname(self.input_file)
-        self.base_name = os.path.basename(self.filename)
-        self.prefix = self.base_name[0:8]
-        self.base_vrt = self.base_name + extension
-        self.vrt_abs = os.path.join(self.vrt_destination, self.base_vrt)
-        self.pattern =  '.*(\d{4})_(\d{3}).*'
-        self.point = self.x_y_from_name(self.pattern, self.base_name)
-        self.extended_coordinates = self.extended_coordinates(self.grid_size,
-                                                              self.point[1],
-                                                              self.point[0])
-        self.bbox = self.raster_bounding_box(self.extended_coordinates)
-        self.extend_to_files = self.file_grid(self.prefix,
-                                              self.extended_coordinates, 
-                                              self.file_extension)
-        self.files_as_string = self.paths_as_string()
-        self.cmd_list = [self.gdalbuildvrt, '-overwrite', self.vrt_abs]
-        self.cmd_as_string = ' '.join(self.cmd_list) + ' ' + self.files_as_string
-	
-	## alle metoder skal helst navngives som udsagnsord
-    # def cell_name_from_filename(self, pattern, name):
-    #     if '100km' in name:
-
-    #     matches = re.match(self.pattern, self.base_name)
-    #     str_tuple = matches.group(1, 2)
-    #     return tuple(int(e) for e in str_tuple) 
-
-    def extended_coordinates(self, grid_size, x_coor, y_coor):
-        grid_extent = grid_size / 2
-        grid_list = [-grid_extent, grid_extent + 1]
-        return [(y_coor + u, x_coor + i) 
-                for i in range(*grid_list) 
-                for u in range(*grid_list)]
-
-    def raster_bounding_box(self, list_lower_left_coords): ## get_bbox
-        lower_left_rast, upper_right_rast = list_lower_left_coords[0], list_lower_left_coords[-1]
-        bbox = tuple([i * 1000 for i in lower_left_rast[::-1]] 
-                     + [(i + 1) * 1000 for i in upper_right_rast[::-1]])
-        return bbox
-
-    def file_grid(self, prefix, coord_list, extension='.tif'):
-        return [prefix
-                + str(i[0])
-                + '_'
-                + str(i[1])
-                + extension
-                for i in coord_list]
-
-    def paths_as_string(self):
-        return ' '.join([os.path.join(self.abspath,i) 
-                         for i in self.extend_to_files])
-	
-	## metode der tager subprocess og outputter vrt (build_vrt)
-
-if __name__ == "__main__":
-    def type_and_id_from_filename(name):
+    def get_filemeta(self, name):
         filename, _file_extension = os.path.splitext(name)
         abs_filename = os.path.basename(filename)
-        cell_sizes = {'100km':-4, '10km':-6, '1km':-8, '500m':-10, '250m':-12, '100m':-10}
+        abs_path = os.path.abspath(os.path.dirname(name))
+        return filename, abs_filename, abs_path
 
-        for size, index in cell_sizes.iteritems():
-            if size in abs_filename:
-                cell_id = abs_filename[index:] 
-                return size, cell_id
+    def type_id_extent_from_file(self, abs_filename):
+        for cell_type, properties in self.cell_types_data.iteritems():
+            if cell_type in abs_filename:
+                cell_id = abs_filename[properties[1]['substr_slice']: ] 
+                extent = properties[0]['extent'] 
+                return cell_type, cell_id, extent
    
-    celltype, cell_id = type_and_id_from_filename(args.file)
-    print(celltype, cell_id)
-
-    def get_coord_tuple_from_id(cell_id_string):
-        len_north_str = 7
-        pattern = '^.*?(\d{2,6})_(\d{1,5}).*$'
+    def get_coord_tuple_from_id(self, cell_id_string):
+        len_north_str = 7 # len of nrth coor, used to determ. nm. of zrs to app
+        pattern = '.*?(\d{2,6})_(\d{1,5}).*$'
+        # pattern = '.*?(\d+.?m).?(\d{2,6})_(\d{1,5}).*$' doesnt work w. 1st gp
         matches = re.match(pattern, cell_id_string)
         split_cellid = matches.group(1, 2)
         app_zeros = (len_north_str - len(split_cellid[0])) * '0'
-        str_coords = tuple(tup + app_zeros for tup in str_tuple)
+        str_coords = tuple(tup + app_zeros for tup in split_cellid)
         return tuple(int(e) for e in str_coords) 
 
-    coord_tup = get_coord_tuple_from_id(cell_id)
-    print(coord_tup)
-
-    def get_neigbouring_coords(self, grid_size, cell_extent, x_coor, y_coor):
+    def get_neigbouring_files(self, grid_size, prefix):
+        x_coord, y_coord = self.ll_coord
         grid_extent = grid_size / 2
-        grid_extent_meters = grid_extent * cell_extent
-        grid_list = [-grid_extent_meters, grid_extent_meters + 1, cell_extent]
-        return [(y_coor + u, x_coor + i) 
-                for i in range(*grid_list) 
-                for u in range(*grid_list)]
+        grid_extent_meters = grid_extent * self.extent
+        grid_list = [-grid_extent_meters, grid_extent_meters + 1, self.extent]
+        self.neigh_coords = [(y_coord + u, x_coord + i) 
+                            for i in range(*grid_list)
+                            for u in range(*grid_list)]
+        self.neigh_files = self.file_grid(self.neigh_coords, 
+                                          self.cell_types_data[self.cell_type][2]['coord_slice'], 
+                                          self.cell_type, prefix)
+        return self.neigh_files
 
-    def raster_bounding_box(self, list_lower_left_coords, cell_extent): ## get_bbox
-        coord_sort = sort(list_lower_left_coords, key = lambda x: (x[0], x[1])
-        lower_left_coord, upper_right_coord = coord_sort[0], 
-                                             coord_sort[-1]
-                                             + cell_extent
-        return lower_left_coord, upper_right_coord
+    def raster_bounding_box(self): 
+        coord_sort = sorted(self.neigh_coords, key = lambda x: (x[0], x[1]))
+        self.bbox_ll = coord_sort[0]
+        self.bbox_ur = tuple(e + self.extent for e in coord_sort[-1])
+        return self.bbox_ll, self.bbox_ur
 
-    def file_grid(self, substr_len, arbi_prefix=None, type_prefix, coord_list, extension='.tif'):
+    def file_grid(self, coord_list, substr_len, type_prefix, arbi_prefix='',
+                  extension='.tif'):
         return [arbi_prefix
                 + type_prefix
-                + str(i[0])[0:substr_len + 1]
                 + '_'
                 + str(i[1])[0:substr_len]
+                + '_'
+                + str(i[0])[0:substr_len]
                 + extension
                 for i in coord_list]
 
-    def subdivide(self, out_type, filename):
-        cell_sizes = {'100km': 
-                      [{extent : 100000}, 
-                       {substr_slice : -4}], 
-                      '10km':
-                      [{extent : 10000}, 
-                       {substr_slice : -6}], 
-                      '1km' : 
-                      [{extent : 1000}, 
-                       {substr_slice : -8}], 
-                      '500m' : 
-                      [{extent : 500},
-                       {substr_slice : -10}],
-                      '250m' : 
-                      [{extent : 250}, 
-                       {substr_slice : -12}], 
-                      '100m' :
-                      [{extent : 100}, 
-                       {substr_slice : -10}] 
-                      }
-        type_cell, cell_id = type_and_id_from_filename(filename)
-        current_extent = cell_sizes['type_cell'][0]['extent']
-        ## SKRIV DET LIGE SOM EN CLASS OK!?
+    def subdivide(self, out_type):
+        ll_coord = self.ll_coord
+        current_extent = self.extent
+        new_extent = self.cell_types_data[out_type][0]['extent']
+        sub_ll = [(llx, lly) 
+                  for llx in range(ll_coord[0], ll_coord[0] 
+                                   + current_extent, new_extent)
+                  for lly in range(ll_coord[1], ll_coord[1]
+                                   + current_extent, new_extent)]
+        return self.file_grid(sub_ll,
+                              self.cell_types_data[out_type][2]['coord_slice'],
+                              type_prefix=out_type)
 
+    def pathify_file(self, path, file_list):
+        pathified = ' '.join([os.path.join(path, f) for f in file_list]) 
+        return pathified    
 
-        ## tilfoej extend i meter til cell sizes dic 
         
